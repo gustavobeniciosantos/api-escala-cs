@@ -28,6 +28,17 @@ model Collaborator{
   name String @unique
   seniority String
   schedule String
+   dayOffs   DayOff[]
 
   @@map("collaborator")
+}
+
+
+model DayOff {
+  id             Int          @id @default(autoincrement())
+  date           DateTime
+  collaboratorId String
+  Collaborator   Collaborator @relation(fields: [collaboratorId], references: [id])
+
+  @@map("day_off")
 }
