@@ -29,16 +29,29 @@ model Collaborator{
   seniority String
   schedule String
    dayOffs   DayOff[]
+   lastDayOfLastMonth LastDayOfLastMonth[]
 
   @@map("collaborator")
 }
 
 
 model DayOff {
-  id             Int          @id @default(autoincrement())
+  id             String          @id @default(uuid())
   date           DateTime
   collaboratorId String
   Collaborator   Collaborator @relation(fields: [collaboratorId], references: [id])
 
   @@map("day_off")
+}
+
+model LastDayOfLastMonth {
+  id String @id @default(uuid())
+  date DateTime
+  CollaboratorId String
+  QtdDayOff Int
+  WeekDay String
+
+  Collaborator Collaborator @relation(fields: [CollaboratorId], references: [id])
+
+  @@map("lastDayOfLastMonth")
 }

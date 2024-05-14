@@ -28,24 +28,24 @@ export async function createSchedule(app: FastifyInstance) {
       worksheet.getCell(2, day + 1).value = formattedDate;
     }
 
-    // Pinte as células de cinza para os dias de folga e adicione um "F"
-    const dayOffs = await prisma.dayOff.findMany();
-    dayOffs.forEach(dayOff => {
-      const rowIndex = collaborators.findIndex(c => c.id === dayOff.collaboratorId) + 3;
-      const columnIndex = dayOff.date.getDate() + 1;
-      const cell = worksheet.getCell(rowIndex, columnIndex);
-      cell.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: '8080' }
-      };
-      cell.value = 'F';
-    });
-    
-    
+   // Pinte as células de cinza para os dias de folga e adicione um "F"
+const dayOffs = await prisma.dayOff.findMany();
+dayOffs.forEach(dayOff => {
+  const rowIndex = collaborators.findIndex(c => c.id === dayOff.collaboratorId) + 3;
+  const columnIndex = dayOff.date.getDate() + 1;
+  const cell = worksheet.getCell(rowIndex, columnIndex);
+  cell.fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: '8080' }
+  };
+  cell.value = 'F';
+});
+
+
 
     // Salve o workbook como um arquivo Excel
-    await workbook.xlsx.writeFile('C:/Users/Gustavo Benicio/Documents/Excel Programa/schedule.xlsx');
+    await workbook.xlsx.writeFile('schedule.xlsx');
 
     reply.code(200).send({ message: 'Schedule created successfully' });
   });
